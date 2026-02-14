@@ -1,45 +1,111 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cloud Drive 1TB</title>
-    <meta charset="UTF-8">
-    <style>
-        body {
-            font-family: Arial;
-            background: #0f172a;
-            color: white;
-            text-align: center;
-            padding: 50px;
-        }
-        .box {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 15px;
-            width: 350px;
-            margin: auto;
-        }
-        .bar {
-            background: #334155;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 20px;
-        }
-        .fill {
-            width: 30%;
-            background: #22c55e;
-            padding: 10px 0;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Cloud Drive 1TB</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#0f172a;
+    color:white;
+}
+
+.container{
+    width:400px;
+    margin:100px auto;
+    background:#1e293b;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 20px rgba(0,0,0,0.5);
+}
+
+h2{
+    text-align:center;
+}
+
+.bar{
+    background:#334155;
+    border-radius:10px;
+    overflow:hidden;
+    margin:15px 0;
+    height:25px;
+}
+
+.fill{
+    background:#22c55e;
+    height:100%;
+    width:0%;
+    text-align:center;
+    line-height:25px;
+    transition:0.4s;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+    background:#3b82f6;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#2563eb;
+}
+
+input{
+    width:100%;
+    margin-top:10px;
+}
+</style>
 </head>
+
 <body>
 
-<div class="box">
+<div class="container">
     <h2>Cloud Drive 1TB</h2>
     <p>Kapasitas Terpakai</p>
     <div class="bar">
-        <div class="fill">300 GB / 1 TB</div>
+        <div class="fill" id="fill">0 GB / 1000 GB</div>
     </div>
+
+    <input type="file" id="fileInput">
+    <button onclick="uploadFile()">Upload File</button>
 </div>
+
+<script>
+let totalStorage = 1000; // 1TB = 1000GB
+let usedStorage = 0;
+
+function uploadFile(){
+    let file = document.getElementById("fileInput").files[0];
+    if(!file){
+        alert("Pilih file dulu!");
+        return;
+    }
+
+    let sizeGB = file.size / (1024*1024*1024);
+    usedStorage += sizeGB;
+
+    if(usedStorage > totalStorage){
+        alert("Storage penuh!");
+        usedStorage = totalStorage;
+    }
+
+    updateBar();
+}
+
+function updateBar(){
+    let percent = (usedStorage / totalStorage) * 100;
+    document.getElementById("fill").style.width = percent + "%";
+    document.getElementById("fill").innerHTML =
+        usedStorage.toFixed(2) + " GB / 1000 GB";
+}
+</script>
 
 </body>
 </html>
